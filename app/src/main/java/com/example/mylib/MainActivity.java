@@ -1,12 +1,10 @@
-package com.example.test;
+package com.example.mylib;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import com.github.llstream.LLStream;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 

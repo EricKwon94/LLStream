@@ -17,11 +17,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven { url 'https://jitpack.io' }
+        jcenter() // Warning: this repository is going to shut down soon
     }
-
-    group = 'com.github.kss2'
 }
 
 task clean(type: Delete) {
