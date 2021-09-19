@@ -16,7 +16,7 @@ public final class LLStream {
     }
 
     //region FILTER
-    static public <T> T[] filter(T[] arr, Predicate1<T> predicate) {
+    static public <T> T[] filter(T[] arr, Delegate.Predicate1<T> predicate) {
         ArrayList<T> temp = new ArrayList<>();
         for (T elem : arr) {
             if (predicate.call(elem)) {
@@ -30,7 +30,7 @@ public final class LLStream {
         return array;
     }
 
-    static public <T> T[] filter(T[] arr, Class<?> c, Predicate1<T> predicate) {
+    static public <T> T[] filter(T[] arr, Class<?> c, Delegate.Predicate1<T> predicate) {
         ArrayList<T> temp = new ArrayList<>();
         for (T elem : arr) {
             if (predicate.call(elem)) {
@@ -44,7 +44,7 @@ public final class LLStream {
         return array;
     }
 
-    static public byte[] filter(byte[] arr, Predicate1<Byte> predicate) {
+    static public byte[] filter(byte[] arr, Delegate.Predicate1<Byte> predicate) {
         ArrayList<Byte> temp = new ArrayList<>();
         for (byte elem : arr) {
             if (predicate.call(elem)) {
@@ -58,7 +58,7 @@ public final class LLStream {
         return array;
     }
 
-    static public boolean[] filter(boolean[] arr, Predicate1<Boolean> predicate) {
+    static public boolean[] filter(boolean[] arr, Delegate.Predicate1<Boolean> predicate) {
         ArrayList<Boolean> temp = new ArrayList<>();
         for (boolean elem : arr) {
             if (predicate.call(elem)) {
@@ -72,7 +72,7 @@ public final class LLStream {
         return array;
     }
 
-    static public char[] filter(char[] arr, Predicate1<Character> predicate) {
+    static public char[] filter(char[] arr, Delegate.Predicate1<Character> predicate) {
         ArrayList<Character> temp = new ArrayList<>();
         for (char elem : arr) {
             if (predicate.call(elem)) {
@@ -86,7 +86,7 @@ public final class LLStream {
         return array;
     }
 
-    static public int[] filter(int[] arr, Predicate1<Integer> predicate) {
+    static public int[] filter(int[] arr, Delegate.Predicate1<Integer> predicate) {
         ArrayList<Integer> temp = new ArrayList<>();
         for (int elem : arr) {
             if (predicate.call(elem)) {
@@ -100,7 +100,7 @@ public final class LLStream {
         return array;
     }
 
-    static public float[] filter(float[] arr, Predicate1<Float> predicate) {
+    static public float[] filter(float[] arr, Delegate.Predicate1<Float> predicate) {
         ArrayList<Float> temp = new ArrayList<>();
         for (float elem : arr) {
             if (predicate.call(elem)) {
@@ -114,7 +114,7 @@ public final class LLStream {
         return array;
     }
 
-    static public double[] filter(double[] arr, Predicate1<Double> predicate) {
+    static public double[] filter(double[] arr, Delegate.Predicate1<Double> predicate) {
         ArrayList<Double> temp = new ArrayList<>();
         for (double elem : arr) {
             if (predicate.call(elem)) {
@@ -128,7 +128,7 @@ public final class LLStream {
         return array;
     }
 
-    static public <V, T extends Collection<V>> T filter(T collection, Predicate1<V> predicate) {
+    static public <V, T extends Collection<V>> T filter(T collection, Delegate.Predicate1<V> predicate) {
         T temp = createCollection(collection);
         for (V elem : collection) {
             if (predicate.call(elem)) {
@@ -138,9 +138,9 @@ public final class LLStream {
         return temp;
     }
 
-    static public <K, V, T extends Map<K, V>> T filter(T map, Predicate1<Map.Entry<K, V>> predicate) {
+    static public <K, V, T extends Map<K, V>> T filter(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
         T temp = createMap(map);
-        for (var elem : map.entrySet()) {
+        for (Map.Entry<K,V> elem : map.entrySet()) {
             if (predicate.call(elem)) {
                 temp.put(elem.getKey(), elem.getValue());
             }
@@ -150,7 +150,7 @@ public final class LLStream {
     //endregion
 
     //region REDUCE
-    static public <IV, T> IV reduce(T[] arr, IV initValue, Func2<IV, T, IV> func) {
+    static public <IV, T> IV reduce(T[] arr, IV initValue, Delegate.Func2<IV, T, IV> func) {
         IV temp = initValue;
         for (T elem : arr) {
             temp = func.call(temp, elem);
@@ -158,7 +158,7 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV> IV reduce(byte[] arr, IV initValue, Func2<IV, Byte, IV> func) {
+    static public <IV> IV reduce(byte[] arr, IV initValue, Delegate.Func2<IV, Byte, IV> func) {
         IV temp = initValue;
         for (byte elem : arr) {
             temp = func.call(temp, elem);
@@ -166,7 +166,7 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV> IV reduce(boolean[] arr, IV initValue, Func2<IV, Boolean, IV> func) {
+    static public <IV> IV reduce(boolean[] arr, IV initValue, Delegate.Func2<IV, Boolean, IV> func) {
         IV temp = initValue;
         for (boolean elem : arr) {
             temp = func.call(temp, elem);
@@ -174,7 +174,7 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV> IV reduce(char[] arr, IV initValue, Func2<IV, Character, IV> func) {
+    static public <IV> IV reduce(char[] arr, IV initValue, Delegate.Func2<IV, Character, IV> func) {
         IV temp = initValue;
         for (char elem : arr) {
             temp = func.call(temp, elem);
@@ -182,7 +182,7 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV> IV reduce(int[] arr, IV initValue, Func2<IV, Integer, IV> func) {
+    static public <IV> IV reduce(int[] arr, IV initValue, Delegate.Func2<IV, Integer, IV> func) {
         IV temp = initValue;
         for (int elem : arr) {
             temp = func.call(temp, elem);
@@ -190,7 +190,7 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV> IV reduce(float[] arr, IV initValue, Func2<IV, Float, IV> func) {
+    static public <IV> IV reduce(float[] arr, IV initValue, Delegate.Func2<IV, Float, IV> func) {
         IV temp = initValue;
         for (float elem : arr) {
             temp = func.call(temp, elem);
@@ -198,7 +198,7 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV> IV reduce(double[] arr, IV initValue, Func2<IV, Double, IV> func) {
+    static public <IV> IV reduce(double[] arr, IV initValue, Delegate.Func2<IV, Double, IV> func) {
         IV temp = initValue;
         for (double elem : arr) {
             temp = func.call(temp, elem);
@@ -206,7 +206,7 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV, V, T extends List<V>> IV reduce(T list, IV initValue, Func2<IV, V, IV> func) {
+    static public <IV, V, T extends List<V>> IV reduce(T list, IV initValue, Delegate.Func2<IV, V, IV> func) {
         IV temp = initValue;
         for (V elem : list) {
             temp = func.call(temp, elem);
@@ -214,15 +214,15 @@ public final class LLStream {
         return temp;
     }
 
-    static public <IV, K, V, T extends Map<K, V>> IV reduce(T map, IV initValue, Func2<IV, Map.Entry<K, V>, IV> func) {
+    static public <IV, K, V, T extends Map<K, V>> IV reduce(T map, IV initValue, Delegate.Func2<IV, Map.Entry<K, V>, IV> func) {
         IV temp = initValue;
-        for (var elem : map.entrySet()) {
+        for (Map.Entry<K,V> elem : map.entrySet()) {
             temp = func.call(temp, elem);
         }
         return temp;
     }
 
-    static public <IV, V, T extends Set<V>> IV reduce(T set, IV initValue, Func2<IV, V, IV> func) {
+    static public <IV, V, T extends Set<V>> IV reduce(T set, IV initValue, Delegate.Func2<IV, V, IV> func) {
         IV temp = initValue;
         for (V elem : set) {
             temp = func.call(temp, elem);
@@ -232,7 +232,7 @@ public final class LLStream {
     //endregion
 
     //region ANY
-    static public <T> boolean any(T[] arr, Predicate1<T> predicate) {
+    static public <T> boolean any(T[] arr, Delegate.Predicate1<T> predicate) {
         for (T elem : arr) {
             if (predicate.call(elem))
                 return true;
@@ -240,7 +240,7 @@ public final class LLStream {
         return false;
     }
 
-    static public boolean any(byte[] arr, Predicate1<Byte> predicate) {
+    static public boolean any(byte[] arr, Delegate.Predicate1<Byte> predicate) {
         for (byte elem : arr) {
             if (predicate.call(elem))
                 return true;
@@ -248,7 +248,7 @@ public final class LLStream {
         return false;
     }
 
-    static public boolean any(boolean[] arr, Predicate1<Boolean> predicate) {
+    static public boolean any(boolean[] arr, Delegate.Predicate1<Boolean> predicate) {
         for (boolean elem : arr) {
             if (predicate.call(elem))
                 return true;
@@ -256,7 +256,7 @@ public final class LLStream {
         return false;
     }
 
-    static public boolean any(char[] arr, Predicate1<Character> predicate) {
+    static public boolean any(char[] arr, Delegate.Predicate1<Character> predicate) {
         for (char elem : arr) {
             if (predicate.call(elem))
                 return true;
@@ -264,7 +264,7 @@ public final class LLStream {
         return false;
     }
 
-    static public boolean any(int[] arr, Predicate1<Integer> predicate) {
+    static public boolean any(int[] arr, Delegate.Predicate1<Integer> predicate) {
         for (int elem : arr) {
             if (predicate.call(elem))
                 return true;
@@ -272,7 +272,7 @@ public final class LLStream {
         return false;
     }
 
-    static public boolean any(float[] arr, Predicate1<Float> predicate) {
+    static public boolean any(float[] arr, Delegate.Predicate1<Float> predicate) {
         for (float elem : arr) {
             if (predicate.call(elem))
                 return true;
@@ -280,7 +280,7 @@ public final class LLStream {
         return false;
     }
 
-    static public boolean any(double[] arr, Predicate1<Double> predicate) {
+    static public boolean any(double[] arr, Delegate.Predicate1<Double> predicate) {
         for (double elem : arr) {
             if (predicate.call(elem))
                 return true;
@@ -288,7 +288,7 @@ public final class LLStream {
         return false;
     }
 
-    static public <T> boolean any(List<T> list, Predicate1<T> predicate) {
+    static public <T> boolean any(List<T> list, Delegate.Predicate1<T> predicate) {
         for (T elem : list) {
             if (predicate.call(elem))
                 return true;
@@ -296,15 +296,15 @@ public final class LLStream {
         return false;
     }
 
-    static public <K, V> boolean any(Map<K, V> map, Predicate1<Map.Entry<K, V>> predicate) {
-        for (var elem : map.entrySet()) {
+    static public <K, V> boolean any(Map<K, V> map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
+        for (Map.Entry<K,V> elem : map.entrySet()) {
             if (predicate.call(elem))
                 return true;
         }
         return false;
     }
 
-    static public <T> boolean any(Set<T> set, Predicate1<T> predicate) {
+    static public <T> boolean any(Set<T> set, Delegate.Predicate1<T> predicate) {
         for (T elem : set) {
             if (predicate.call(elem))
                 return true;
@@ -314,7 +314,7 @@ public final class LLStream {
     //endregion
 
     //region ALL
-    static public <T> boolean all(T[] arr, Predicate1<T> predicate) {
+    static public <T> boolean all(T[] arr, Delegate.Predicate1<T> predicate) {
         for (T elem : arr) {
             if (!predicate.call(elem))
                 return false;
@@ -322,7 +322,7 @@ public final class LLStream {
         return true;
     }
 
-    static public boolean all(byte[] arr, Predicate1<Byte> predicate) {
+    static public boolean all(byte[] arr, Delegate.Predicate1<Byte> predicate) {
         for (byte elem : arr) {
             if (!predicate.call(elem))
                 return false;
@@ -330,7 +330,7 @@ public final class LLStream {
         return true;
     }
 
-    static public boolean all(boolean[] arr, Predicate1<Boolean> predicate) {
+    static public boolean all(boolean[] arr, Delegate.Predicate1<Boolean> predicate) {
         for (boolean elem : arr) {
             if (!predicate.call(elem))
                 return false;
@@ -338,7 +338,7 @@ public final class LLStream {
         return true;
     }
 
-    static public boolean all(char[] arr, Predicate1<Character> predicate) {
+    static public boolean all(char[] arr, Delegate.Predicate1<Character> predicate) {
         for (char elem : arr) {
             if (!predicate.call(elem))
                 return false;
@@ -346,7 +346,7 @@ public final class LLStream {
         return true;
     }
 
-    static public boolean all(int[] arr, Predicate1<Integer> predicate) {
+    static public boolean all(int[] arr, Delegate.Predicate1<Integer> predicate) {
         for (int elem : arr) {
             if (!predicate.call(elem))
                 return false;
@@ -354,7 +354,7 @@ public final class LLStream {
         return true;
     }
 
-    static public boolean all(float[] arr, Predicate1<Float> predicate) {
+    static public boolean all(float[] arr, Delegate.Predicate1<Float> predicate) {
         for (float elem : arr) {
             if (!predicate.call(elem))
                 return false;
@@ -362,7 +362,7 @@ public final class LLStream {
         return true;
     }
 
-    static public boolean all(double[] arr, Predicate1<Double> predicate) {
+    static public boolean all(double[] arr, Delegate.Predicate1<Double> predicate) {
         for (double elem : arr) {
             if (!predicate.call(elem))
                 return false;
@@ -370,7 +370,7 @@ public final class LLStream {
         return true;
     }
 
-    static public <T> boolean all(List<T> list, Predicate1<T> predicate) {
+    static public <T> boolean all(List<T> list, Delegate.Predicate1<T> predicate) {
         for (T elem : list) {
             if (!predicate.call(elem))
                 return false;
@@ -378,15 +378,15 @@ public final class LLStream {
         return true;
     }
 
-    static public <K, V> boolean all(Map<K, V> map, Predicate1<Map.Entry<K, V>> predicate) {
-        for (var elem : map.entrySet()) {
+    static public <K, V> boolean all(Map<K, V> map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
+        for (Map.Entry<K,V> elem : map.entrySet()) {
             if (!predicate.call(elem))
                 return false;
         }
         return true;
     }
 
-    static public <T> boolean all(Set<T> set, Predicate1<T> predicate) {
+    static public <T> boolean all(Set<T> set, Delegate.Predicate1<T> predicate) {
         for (T elem : set) {
             if (!predicate.call(elem))
                 return false;
@@ -396,81 +396,81 @@ public final class LLStream {
     //endregion
 
     //region COUNT
-    static public <T> int count(T[] arr, Predicate1<T> predicate) {
+    static public <T> int count(T[] arr, Delegate.Predicate1<T> predicate) {
         int count = 0;
-        for (var elem : arr) {
+        for (T elem : arr) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public int count(byte[] arr, Predicate1<Byte> predicate) {
+    static public int count(byte[] arr, Delegate.Predicate1<Byte> predicate) {
         int count = 0;
-        for (var elem : arr) {
+        for (byte elem : arr) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public int count(boolean[] arr, Predicate1<Boolean> predicate) {
+    static public int count(boolean[] arr, Delegate.Predicate1<Boolean> predicate) {
         int count = 0;
-        for (var elem : arr) {
+        for (boolean elem : arr) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public int count(char[] arr, Predicate1<Character> predicate) {
+    static public int count(char[] arr, Delegate.Predicate1<Character> predicate) {
         int count = 0;
-        for (var elem : arr) {
+        for (char elem : arr) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public int count(int[] arr, Predicate1<Integer> predicate) {
+    static public int count(int[] arr, Delegate.Predicate1<Integer> predicate) {
         int count = 0;
-        for (var elem : arr) {
+        for (int elem : arr) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public int count(float[] arr, Predicate1<Float> predicate) {
+    static public int count(float[] arr, Delegate.Predicate1<Float> predicate) {
         int count = 0;
-        for (var elem : arr) {
+        for (float elem : arr) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public int count(double[] arr, Predicate1<Double> predicate) {
+    static public int count(double[] arr, Delegate.Predicate1<Double> predicate) {
         int count = 0;
-        for (var elem : arr) {
+        for (double elem : arr) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public <V, T extends Collection<V>> int count(T collection, Predicate1<V> predicate) {
+    static public <V, T extends Collection<V>> int count(T collection, Delegate.Predicate1<V> predicate) {
         int count = 0;
-        for (var elem : collection) {
+        for (V elem : collection) {
             if (predicate.call(elem))
                 ++count;
         }
         return count;
     }
 
-    static public <K, V, T extends Map<K, V>> int count(T map, Predicate1<Map.Entry<K, V>> predicate) {
+    static public <K, V, T extends Map<K, V>> int count(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
         int count = 0;
-        for (var elem : map.entrySet()) {
+        for (Map.Entry<K,V> elem : map.entrySet()) {
             if (predicate.call(elem))
                 ++count;
         }
@@ -1379,7 +1379,7 @@ public final class LLStream {
     //endregion
 
     //region INDEXOF PREDICATE
-    static public <T> int indexOf(T[] arr, Predicate1<T> predicate) {
+    static public <T> int indexOf(T[] arr, Delegate.Predicate1<T> predicate) {
         for (int i = 0; i < arr.length; i++) {
             if (predicate.call(arr[i])) {
                 return i;
@@ -1388,7 +1388,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public int indexOf(byte[] arr, Predicate1<Byte> predicate) {
+    static public int indexOf(byte[] arr, Delegate.Predicate1<Byte> predicate) {
         for (int i = 0; i < arr.length; i++) {
             if (predicate.call(arr[i])) {
                 return i;
@@ -1397,7 +1397,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public int indexOf(boolean[] arr, Predicate1<Boolean> predicate) {
+    static public int indexOf(boolean[] arr, Delegate.Predicate1<Boolean> predicate) {
         for (int i = 0; i < arr.length; i++) {
             if (predicate.call(arr[i])) {
                 return i;
@@ -1406,7 +1406,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public int indexOf(char[] arr, Predicate1<Character> predicate) {
+    static public int indexOf(char[] arr, Delegate.Predicate1<Character> predicate) {
         for (int i = 0; i < arr.length; i++) {
             if (predicate.call(arr[i])) {
                 return i;
@@ -1415,7 +1415,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public int indexOf(int[] arr, Predicate1<Integer> predicate) {
+    static public int indexOf(int[] arr, Delegate.Predicate1<Integer> predicate) {
         for (int i = 0; i < arr.length; i++) {
             if (predicate.call(arr[i])) {
                 return i;
@@ -1424,7 +1424,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public int indexOf(float[] arr, Predicate1<Float> predicate) {
+    static public int indexOf(float[] arr, Delegate.Predicate1<Float> predicate) {
         for (int i = 0; i < arr.length; i++) {
             if (predicate.call(arr[i])) {
                 return i;
@@ -1433,7 +1433,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public int indexOf(double[] arr, Predicate1<Double> predicate) {
+    static public int indexOf(double[] arr, Delegate.Predicate1<Double> predicate) {
         for (int i = 0; i < arr.length; i++) {
             if (predicate.call(arr[i])) {
                 return i;
@@ -1442,7 +1442,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public <V, T extends List<V>> int indexOf(T list, Predicate1<V> predicate) {
+    static public <V, T extends List<V>> int indexOf(T list, Delegate.Predicate1<V> predicate) {
         for (int i = 0; i < list.size(); i++) {
             if (predicate.call(list.get(i))) {
                 return i;
@@ -1451,7 +1451,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public <K, V, T extends Map<K, V>> int indexOf(T map, Predicate1<Map.Entry<K, V>> predicate) {
+    static public <K, V, T extends Map<K, V>> int indexOf(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
         Object[] entries = map.entrySet().toArray();
         for (int i = 0; i < map.size(); i++) {
             Map.Entry<K, V> entry = (Map.Entry<K, V>) entries[i];
@@ -1462,7 +1462,7 @@ public final class LLStream {
         return -1;
     }
 
-    static public <V, T extends Set<V>> int indexOf(T set, Predicate1<V> predicate) {
+    static public <V, T extends Set<V>> int indexOf(T set, Delegate.Predicate1<V> predicate) {
         Object[] values = set.toArray();
         for (int i = 0; i < set.size(); i++) {
             V value = (V) values[i];
@@ -1475,19 +1475,19 @@ public final class LLStream {
     //endregion
 
     //region GET
-    static public <T> T get(T[] arr, Predicate1<T> predicate) {
-        for (var elem : arr) {
+    static public <T> T get(T[] arr, Delegate.Predicate1<T> predicate) {
+        for (T elem : arr) {
             if (predicate.call(elem))
                 return elem;
         }
         return null;
     }
 
-    static public <V, T extends List<V>> V get(T list, Predicate1<V> predicate) {
+    static public <V, T extends List<V>> V get(T list, Delegate.Predicate1<V> predicate) {
         if (list.size() == 0)
             throw new LLStreamException("Don't put empty List");
 
-        for (var elem : list) {
+        for (V elem : list) {
             if (predicate.call(elem))
                 return elem;
         }
@@ -1512,8 +1512,8 @@ public final class LLStream {
         return null;
     }
 
-    static public <K, V, T extends Map<K, V>> Map.Entry<K, V> get(T map, Predicate1<Map.Entry<K, V>> predicate) {
-        for (var elem : map.entrySet()) {
+    static public <K, V, T extends Map<K, V>> Map.Entry<K, V> get(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
+        for (Map.Entry<K,V> elem : map.entrySet()) {
             if (predicate.call(elem))
                 return elem;
         }
@@ -1539,11 +1539,11 @@ public final class LLStream {
         return null;
     }
 
-    static public <V, T extends Set<V>> V get(T set, Predicate1<V> predicate) {
+    static public <V, T extends Set<V>> V get(T set, Delegate.Predicate1<V> predicate) {
         if (set.size() == 0)
             throw new LLStreamException("Don't put empty Set");
 
-        for (var elem : set) {
+        for (V elem : set) {
             if (predicate.call(elem))
                 return elem;
         }
@@ -1577,127 +1577,6 @@ public final class LLStream {
     }
     //endregion
 
-    //region INTERFACE
-    public interface Action {
-        void call();
-    }
-
-    public interface Action1<T1> {
-        void call(T1 t1);
-    }
-
-    public interface Action2<T1, T2> {
-        void call(T1 t1, T2 t2);
-    }
-
-    public interface Action3<T1, T2, T3> {
-        void call(T1 t1, T2 t2, T3 t3);
-    }
-
-    public interface Action4<T1, T2, T3, T4> {
-        void call(T1 t1, T2 t2, T3 t3, T4 t4);
-    }
-
-    public interface Action5<T1, T2, T3, T4, T5> {
-        void call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5);
-    }
-
-    public interface Action6<T1, T2, T3, T4, T5, T6> {
-        void call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
-    }
-
-    public interface Action7<T1, T2, T3, T4, T5, T6, T7> {
-        void call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
-    }
-
-    public interface Action8<T1, T2, T3, T4, T5, T6, T7, T8> {
-        void call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8);
-    }
-
-    public interface Action9<T1, T2, T3, T4, T5, T6, T7, T8, T9> {
-        void call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9);
-    }
-
-    public interface Func<R> {
-        R call();
-    }
-
-    public interface Func1<T1, R> {
-        R call(T1 t1);
-    }
-
-    public interface Func2<T1, T2, R> {
-        R call(T1 t1, T2 t2);
-    }
-
-    public interface Func3<T1, T2, T3, R> {
-        R call(T1 t1, T2 t2, T3 t3);
-    }
-
-    public interface Func4<T1, T2, T3, T4, R> {
-        R call(T1 t1, T2 t2, T3 t3, T4 t4);
-    }
-
-    public interface Func5<T1, T2, T3, T4, T5, R> {
-        R call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5);
-    }
-
-    public interface Func6<T1, T2, T3, T4, T5, T6, R> {
-        R call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
-    }
-
-    public interface Func7<T1, T2, T3, T4, T5, T6, T7, R> {
-        R call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
-    }
-
-    public interface Func8<T1, T2, T3, T4, T5, T6, T7, T8, R> {
-        R call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8);
-    }
-
-    public interface Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> {
-        R call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9);
-    }
-
-    public interface Predicate {
-        boolean call();
-    }
-
-    public interface Predicate1<T1> {
-        boolean call(T1 t1);
-    }
-
-    public interface Predicate2<T1, T2> {
-        boolean call(T1 t1, T2 t2);
-    }
-
-    public interface Predicate3<T1, T2, T3> {
-        boolean call(T1 t1, T2 t2, T3 t3);
-    }
-
-    public interface Predicate4<T1, T2, T3, T4> {
-        boolean call(T1 t1, T2 t2, T3 t3, T4 t4);
-    }
-
-    public interface Predicate5<T1, T2, T3, T4, T5> {
-        boolean call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5);
-    }
-
-    public interface Predicate6<T1, T2, T3, T4, T5, T6> {
-        boolean call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
-    }
-
-    public interface Predicate7<T1, T2, T3, T4, T5, T6, T7> {
-        boolean call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
-    }
-
-    public interface Predicate8<T1, T2, T3, T4, T5, T6, T7, T8> {
-        boolean call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8);
-    }
-
-    public interface Predicate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> {
-        boolean call(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9);
-    }
-    //endregion
 }
 
 class LLStreamException extends RuntimeException {
