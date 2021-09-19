@@ -3,7 +3,7 @@ This stream API can use under API level 24
 ## Setup
 ```java
 repositories {
-	maven { 'https://jitpack.io' }
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
