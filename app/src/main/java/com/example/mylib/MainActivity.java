@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import com.github.llstream.LLStream;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -45,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         set.add(1);
         set.add(3);
         set.add(300);
-
         String[] str = new String[]{"11", "12", "13"};
         Person[] people = new Person[]{new Person("k", 10)};
         int[] nums = {0,2,1,3,100};
@@ -66,12 +68,11 @@ public class MainActivity extends AppCompatActivity {
         int[] result12 = LLStream.skipTakeLast(nums,2,2);
 
         int result13=LLStream.indexOf(nums,elem->elem==100);
+        int result17=LLStream.indexOf(list,elem->elem==100);
         int result14=LLStream.indexOf(set,elem->elem==300);
 
-        Object result15=LLStream.get(map,30);
-        int result16=LLStream.get(set,5);
-
-
+        Object result15=LLStream.getOrDefault(map,30);
+        int result16=LLStream.getOrDefault(set,-1,5);
         int i = 10;
     }
 }

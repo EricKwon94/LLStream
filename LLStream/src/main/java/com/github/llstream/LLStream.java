@@ -140,7 +140,7 @@ public final class LLStream {
 
     static public <K, V, T extends Map<K, V>> T filter(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
         T temp = createMap(map);
-        for (Map.Entry<K,V> elem : map.entrySet()) {
+        for (Map.Entry<K, V> elem : map.entrySet()) {
             if (predicate.call(elem)) {
                 temp.put(elem.getKey(), elem.getValue());
             }
@@ -216,7 +216,7 @@ public final class LLStream {
 
     static public <IV, K, V, T extends Map<K, V>> IV reduce(T map, IV initValue, Delegate.Func2<IV, Map.Entry<K, V>, IV> func) {
         IV temp = initValue;
-        for (Map.Entry<K,V> elem : map.entrySet()) {
+        for (Map.Entry<K, V> elem : map.entrySet()) {
             temp = func.call(temp, elem);
         }
         return temp;
@@ -297,7 +297,7 @@ public final class LLStream {
     }
 
     static public <K, V> boolean any(Map<K, V> map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
-        for (Map.Entry<K,V> elem : map.entrySet()) {
+        for (Map.Entry<K, V> elem : map.entrySet()) {
             if (predicate.call(elem))
                 return true;
         }
@@ -379,7 +379,7 @@ public final class LLStream {
     }
 
     static public <K, V> boolean all(Map<K, V> map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
-        for (Map.Entry<K,V> elem : map.entrySet()) {
+        for (Map.Entry<K, V> elem : map.entrySet()) {
             if (!predicate.call(elem))
                 return false;
         }
@@ -470,7 +470,7 @@ public final class LLStream {
 
     static public <K, V, T extends Map<K, V>> int count(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
         int count = 0;
-        for (Map.Entry<K,V> elem : map.entrySet()) {
+        for (Map.Entry<K, V> elem : map.entrySet()) {
             if (predicate.call(elem))
                 ++count;
         }
@@ -1442,9 +1442,11 @@ public final class LLStream {
         return -1;
     }
 
-    static public <V, T extends List<V>> int indexOf(T list, Delegate.Predicate1<V> predicate) {
-        for (int i = 0; i < list.size(); i++) {
-            if (predicate.call(list.get(i))) {
+    static public <V, T extends Collection<V>> int indexOf(T collection, Delegate.Predicate1<V> predicate) {
+        Object[] values = collection.toArray();
+        for (int i = 0; i < collection.size(); i++) {
+            V value = (V) values[i];
+            if (predicate.call(value)) {
                 return i;
             }
         }
@@ -1461,17 +1463,6 @@ public final class LLStream {
         }
         return -1;
     }
-
-    static public <V, T extends Set<V>> int indexOf(T set, Delegate.Predicate1<V> predicate) {
-        Object[] values = set.toArray();
-        for (int i = 0; i < set.size(); i++) {
-            V value = (V) values[i];
-            if (predicate.call(value)) {
-                return i;
-            }
-        }
-        return -1;
-    }
     //endregion
 
     //region GET
@@ -1480,26 +1471,15 @@ public final class LLStream {
             if (predicate.call(elem))
                 return elem;
         }
-        return null;
+        throw new LLStreamException("Sequence not found");
     }
 
     static public <V, T extends List<V>> V get(T list, Delegate.Predicate1<V> predicate) {
-        if (list.size() == 0)
-            throw new LLStreamException("Don't put empty List");
-
         for (V elem : list) {
             if (predicate.call(elem))
                 return elem;
         }
-
-        V value = list.get(0);
-        if (value instanceof Number)
-            return (V) (Object) 0;
-        else if (value instanceof Boolean)
-            return (V) (Object) false;
-        else if (value instanceof Character)
-            return (V) (Object) ' ';
-        return null;
+        throw new LLStreamException("Sequence not found");
     }
 
     static public <K, V, T extends Map<K, V>> Map.Entry<K, V> get(T map, int index) {
@@ -1509,55 +1489,209 @@ public final class LLStream {
                 return (Map.Entry<K, V>) entries[i];
             }
         }
-        return null;
+        throw new LLStreamException("Sequence not found");
     }
 
     static public <K, V, T extends Map<K, V>> Map.Entry<K, V> get(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
-        for (Map.Entry<K,V> elem : map.entrySet()) {
+        for (Map.Entry<K, V> elem : map.entrySet()) {
             if (predicate.call(elem))
                 return elem;
         }
-        return null;
+        throw new LLStreamException("Sequence not found");
     }
 
     static public <V, T extends Set<V>> V get(T set, int index) {
-        if (set.size() == 0)
-            throw new LLStreamException("Don't put empty Set");
-
         Object[] values = set.toArray();
         for (int i = 0; i < set.size(); i++) {
             if (i == index) {
                 return (V) values[i];
             }
         }
-        if (values[0] instanceof Number)
-            return (V) (Object) 0;
-        else if (values[0] instanceof Boolean)
-            return (V) (Object) false;
-        else if (values[0] instanceof Character)
-            return (V) (Object) ' ';
-        return null;
+        throw new LLStreamException("Sequence not found");
     }
 
     static public <V, T extends Set<V>> V get(T set, Delegate.Predicate1<V> predicate) {
-        if (set.size() == 0)
-            throw new LLStreamException("Don't put empty Set");
-
         for (V elem : set) {
             if (predicate.call(elem))
                 return elem;
         }
-
-        Object[] values = set.toArray();
-        if (values[0] instanceof Number)
-            return (V) (Object) 0;
-        else if (values[0] instanceof Boolean)
-            return (V) (Object) false;
-        else if (values[0] instanceof Character)
-            return (V) (Object) ' ';
-        return null;
+        throw new LLStreamException("Sequence not found");
     }
     //endregion
+
+    //region GET_OR_DEFAULT
+    static public <T> T getOrDefault(T[] arr, T defaultValue, Delegate.Predicate1<T> predicate) {
+        for (T elem : arr) {
+            if (predicate.call(elem))
+                return elem;
+        }
+        return defaultValue;
+    }
+
+    static public <V, T extends List<V>> V getOrDefault(T list, V defaultValue, Delegate.Predicate1<V> predicate) {
+        for (V elem : list) {
+            if (predicate.call(elem))
+                return elem;
+        }
+        return defaultValue;
+    }
+
+    static public <K, V, T extends Map<K, V>> Map.Entry<K, V> getOrDefault(T map, int index) {
+        Object[] entries = map.entrySet().toArray();
+        for (int i = 0; i < map.size(); i++) {
+            if (i == index) {
+                return (Map.Entry<K, V>) entries[i];
+            }
+        }
+        return null;
+    }
+
+    static public <K, V, T extends Map<K, V>> Map.Entry<K, V> getOrDefault(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
+        for (Map.Entry<K, V> elem : map.entrySet()) {
+            if (predicate.call(elem))
+                return elem;
+        }
+        return null;
+    }
+
+    static public <V, T extends Set<V>> V getOrDefault(T set, V defaultValue, int index) {
+        Object[] values = set.toArray();
+        for (int i = 0; i < set.size(); i++) {
+            if (i == index) {
+                return (V) values[i];
+            }
+        }
+        return defaultValue;
+    }
+
+    static public <V, T extends Set<V>> V getOrDefault(T set, V defaultValue, Delegate.Predicate1<V> predicate) {
+        for (V elem : set) {
+            if (predicate.call(elem))
+                return elem;
+        }
+        return defaultValue;
+    }
+    //endregion
+
+    // region SINGLE
+    static public <T> T single(T[] arr, Delegate.Predicate1<T> predicate) {
+        T result = null;
+        for (T elem : arr) {
+            if (predicate.call(elem)) {
+                if (result != null)
+                    throw new LLStreamException("Sequence is not single");
+                result = elem;
+            }
+        }
+        if (result == null)
+            throw new LLStreamException("Sequence not found");
+        else
+            return result;
+    }
+
+    static public <V, T extends List<V>> V single(T list, Delegate.Predicate1<V> predicate) {
+        V result = null;
+        for (V elem : list) {
+            if (predicate.call(elem)) {
+                if (result != null)
+                    throw new LLStreamException("Sequence is not single");
+                result = elem;
+            }
+        }
+        if (result == null)
+            throw new LLStreamException("Sequence not found");
+        else
+            return result;
+    }
+
+    static public <K, V, T extends Map<K, V>> Map.Entry<K, V> single(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
+        Map.Entry<K, V> result = null;
+        for (Map.Entry<K, V> elem : map.entrySet()) {
+            if (predicate.call(elem)) {
+                if (result != null)
+                    throw new LLStreamException("Sequence is not single");
+                result = elem;
+            }
+        }
+        if (result == null)
+            throw new LLStreamException("Sequence not found");
+        else
+            return result;
+    }
+
+    static public <V, T extends Set<V>> V single(T set, Delegate.Predicate1<V> predicate) {
+        V result = null;
+        for (V elem : set) {
+            if (result != null)
+                throw new LLStreamException("Sequence is not single");
+            result = elem;
+        }
+        if (result == null)
+            throw new LLStreamException("Sequence not found");
+        else
+            return result;
+    }
+    // endregion
+
+    // region SINGLE_OR_DEFAULT
+    static public <T> T singleOrDefault(T[] arr, T defaultValue, Delegate.Predicate1<T> predicate) {
+        T result = null;
+        for (T elem : arr) {
+            if (predicate.call(elem)) {
+                if (result != null)
+                    throw new LLStreamException("Sequence is not single");
+                result = elem;
+            }
+        }
+        if (result == null)
+            return defaultValue;
+        else
+            return result;
+    }
+
+    static public <V, T extends List<V>> V singleOrDefault(T list, V defaultValue, Delegate.Predicate1<V> predicate) {
+        V result = null;
+        for (V elem : list) {
+            if (predicate.call(elem)) {
+                if (result != null)
+                    throw new LLStreamException("Sequence is not single");
+                result = elem;
+            }
+        }
+        if (result == null)
+            return defaultValue;
+        else
+            return result;
+    }
+
+    static public <K, V, T extends Map<K, V>> Map.Entry<K, V> singleOrDefault(T map, Delegate.Predicate1<Map.Entry<K, V>> predicate) {
+        Map.Entry<K, V> result = null;
+        for (Map.Entry<K, V> elem : map.entrySet()) {
+            if (predicate.call(elem)) {
+                if (result != null)
+                    throw new LLStreamException("Sequence is not single");
+                result = elem;
+            }
+        }
+        if (result == null)
+            return null;
+        else
+            return result;
+    }
+
+    static public <V, T extends Set<V>> V singleOrDefault(T set, V defaultValue, Delegate.Predicate1<V> predicate) {
+        V result = null;
+        for (V elem : set) {
+            if (result != null)
+                throw new LLStreamException("Sequence is not single");
+            result = elem;
+        }
+        if (result == null)
+            return defaultValue;
+        else
+            return result;
+    }
+    // endregion
 
     //region PRIVATE
     static private <V, T extends Collection<V>> T createCollection(T collection) {

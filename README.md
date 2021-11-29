@@ -2,12 +2,15 @@
 This stream API can use under API level 24
 ## Setup
 ```java
-repositories {
-	maven { url 'https://jitpack.io' }
-}
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
 
 dependencies {
-	implementation 'com.github.kss2:LLStream:1.0.1'
+	implementation 'com.github.kss2:LLStream:1.0.2'
 }
 ```
 ## Usage
@@ -34,6 +37,9 @@ skipTake
 skipTakeLast
 indexOf (predicate)
 get (findByIndex or findByPredicate)
+getOrDefault (findByIndex or findByPredicate)
+single(predicate)
+singleOrDefault(predicate)
 ```
 ## License
 LLStream is under MIT license. See the [LICENSE](LICENSE) file for more info.
